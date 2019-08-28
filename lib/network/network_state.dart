@@ -30,7 +30,8 @@ class OnSuccessState extends NetworkState {
 class OnErrorState extends NetworkState {
   final String message;
   OnErrorState({@required String message})
-      : assert(message != null),
+      :
+        assert(message != null),
         this.message = message,
         super([message]);
 

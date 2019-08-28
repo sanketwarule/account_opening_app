@@ -1,4 +1,7 @@
 import 'package:account_opening_app/bloc/bloc.dart';
+import 'package:account_opening_app/network/network.dart';
+import 'package:account_opening_app/network/network_bloc.dart';
+import 'package:account_opening_app/pages/home_page.dart';
 import 'package:account_opening_app/utils/app_constants.dart';
 import 'package:account_opening_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -10,25 +13,48 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(child: AccAppBar(title: APP_TITLE,),preferredSize: Size.fromHeight(55.0),),
 
-      body: BlocProvider(
-        builder: (BuildContext context) => LoginBloc(context),
+      body: BlocListener<NetworkBloc, NetworkState>(
+         listener: (context, state) {
+           if (state is OnSuccessState) {
+             Navigator.of(context).push(new MaterialPageRoute(builder: (context) => HomePage(state.response)));
+           }
 
-        child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is InitialLoginState){
+//           else if(state is InitialLoginState){
+//             ProgressBar();
+//           }
+//
+//           else if(state is InitialLoginState){
+//             ProgressBar();
+//           }
+           else if(state is OnErrorState){
+             Scaffold.of(context).showSnackBar(
+               SnackBar(
+                 backgroundColor: Colors.green,
+                 content: Text(state.message),
+               ),
+             );
+           }
+         },
+         child: BlocProvider(
+          builder: (BuildContext context) => LoginBloc(context),
+
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              if (state is InitialLoginState){
+                return LoginScreen();
+              }
+               else if (state is LoginLoadingState){
+                  return ProgressBar();
+               }
+//              else if (state is LoggedInState){
+//                return loggedIn(state,context);
+//              }
+//              else if (state is NotLoggedInState){
+//                return errorScreen();
+//              }
               return LoginScreen();
-            } 
-            // else if (state is LoginLoadingState){
-            //   // return ProgressBar();
-            // }
-            else if (state is LoggedInState){
-              
-              return loggedIn(state,context);
-            }else if (state is NotLoggedInState){
-              return errorScreen();
-            }
-            return LoginScreen();
-          },
+            },
+          ),
         ),
       ),
     );
@@ -38,7 +64,7 @@ class LoginPage extends StatelessWidget {
  loggedIn(LoggedInState state, BuildContext context){
 
   //  return Navigator.push( new MaterialPageRoute(builder: (BuildContext builderContext) => HomePage(state.user.userName)));
-    return Container(child: Center(child: Text("Logged in ${state.user.userName}")),);
+//    return Container(child: Center(child: Text("Logged in ${state.user.userName}")),);
   }
 
   Widget errorScreen() => Center(child: Text("Error while login"),);

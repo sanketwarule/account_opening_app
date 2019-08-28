@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 
-import 'package:account_opening_app/utils/app_constants.dart';
 import 'package:account_opening_app/excpetions/exceptions.dart';
 
 class NetworkHandler {
@@ -20,13 +19,13 @@ class NetworkHandler {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => trustSelfSigned);
       IOClient ioClient = new IOClient(_httpClient);
-      final response = await ioClient.post(BASE_URL + endUrl, body: data);
+      final response = await ioClient.post("http://www.mocky.io/v2/5d66a305330000eb74449e2e", body: data);
       print(
           "NetworkHandler {url : ${response.request.url} , data : $data , status : ${response.statusCode}}");
       responseString = _returnResponse(response);
       networkBloc.dispatch(Completed(responseData: responseString));
     } on SocketException {
-      networkBloc.dispatch(Error(message: responseString));
+      networkBloc.dispatch(Error(message: 'No Internet connection'));
       throw FetchDataException('No Internet connection');
 
     }

@@ -5,8 +5,11 @@ class HomePage extends StatelessWidget {
   HomePage(this.data);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(child: Text(data??"NA"),)
+    return Scaffold(
+      appBar: AppBar(title: Text("Home"),),
+      body: Container(
+        child: Center(child: Text(data??"NA"),)
+      ),
     );
   }
 }
