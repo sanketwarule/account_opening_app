@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:account_opening_app/bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 
@@ -19,10 +17,10 @@ class NetworkHandler {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => trustSelfSigned);
       IOClient ioClient = new IOClient(_httpClient);
-      final response = await ioClient.post(BASE_URL + endUrl, body: data);
-      print(
-          "NetworkHandler {url : ${response.request.url} , data : $data , status : ${response.statusCode}}");
-      responseString = _returnResponse(response);
+      // final response = await ioClient.post(BASE_URL + endUrl, body: data);
+      // print(
+          // "NetworkHandler {url : ${response.request.url} , data : $data , status : ${response.statusCode}}");
+      // responseString = _returnResponse(response);
       // networkBloc.dispatch(Completed(responseData: responseString));
     } on SocketException {
       // networkBloc.dispatch(Error(message: responseString));

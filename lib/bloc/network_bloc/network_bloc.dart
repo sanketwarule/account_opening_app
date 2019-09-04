@@ -10,7 +10,14 @@ class NetworkBloc extends Bloc<NetworkEvent, NetworkState>{
   Stream<NetworkState> mapEventToState(NetworkEvent event) async*{
 
     if(event is Completed){
-      yield OnSuccessState(response: event.responseData);
+      if(event.responseData.startsWith("0")){
+        yield OnSuccessState(response: event.responseData);
+      }else if(event.responseData.startsWith("1")){
+        yield OnErrorState(message: event.responseData);
+      }
+      else if(event.responseData.startsWith("-1")){
+        yield OnErrorState(message: event.responseData);
+      }
     }else if(event is Error){
       yield OnErrorState(message: event.message);
     }else if (event is Loading){

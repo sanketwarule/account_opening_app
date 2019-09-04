@@ -11,7 +11,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(child: AccAppBar(title: APP_TITLE,),preferredSize: Size.fromHeight(55.0),),
-
       body: BlocListener<NetworkBloc, NetworkState>(
       listener: (BuildContext context, state) {
         if(state is OnSuccessState){
@@ -28,31 +27,35 @@ class LoginPage extends StatelessWidget {
       child: BlocProvider(
         builder: (BuildContext context) => LoginBloc(userRepository: LoggedInUserRepository()),
 
-        child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is InitialLoginState){
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              if (state is InitialLoginState){
+                return LoginScreen();
+              }
+               else if (state is LoginLoadingState){
+                  return ProgressBar();
+               }
+             else if (state is LoggedInState){
+
+               // here I want to navigate to homepage instead of rendering the page inside the Login Page
+               // How could I do this? Previously (Before adding the Repository) I was dispatching the Network Events from the NetworkHandler.. 
+               // Now After uing the Repository I am confused that from where should I dispatch the events of networkbloc
+
+               // You can modify this code... so I can able to understand
+              
+               return HomePage(state.user.userName);
+             }
+             else if (state is NotLoggedInState){
+               return errorScreen();
+             }
               return LoginScreen();
-            } 
-            else if (state is LoginLoadingState){
-          
-              return ProgressBar();
             }
-           else if (state is NotLoggedInState){
-              return errorScreen();
-            }
-            else if (state is LoggedInState){
-              // here is my doubt....
-              // from where should i dispatch the Loading, completed and error events of network bloc
-              // instead of calling a HomePage widget, I have to navigate to HomePage
-              return HomePage(state.user.userName);
-            }
-            return LoginScreen();
-          },
+          ),
         ),
       ), 
-    ),
     );
   }
+
 
   Widget errorScreen() => Center(child: Text("Error while login"),);
 }
