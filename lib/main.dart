@@ -1,8 +1,6 @@
-import 'package:account_opening_app/network/network_bloc.dart';
-import 'package:account_opening_app/network/network_state.dart';
+import 'package:account_opening_app/bloc/bloc.dart';
 import 'package:account_opening_app/pages/pages.dart';
 import 'package:account_opening_app/simple_bloc_delegate.dart';
-import 'package:account_opening_app/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'utils/app_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,13 +21,11 @@ class AccApp extends StatelessWidget{
           BlocProvider<NetworkBloc>(builder: (context) =>  NetworkBloc()),
         ],
       child: MaterialApp(
+
       title: APP_TITLE,
       home: LoginPage()
 
       ),
-      
-      
-      
       
       
     );

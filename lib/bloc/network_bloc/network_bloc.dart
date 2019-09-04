@@ -1,5 +1,4 @@
-import 'package:account_opening_app/network/network_event.dart';
-import 'package:account_opening_app/network/network_state.dart';
+import 'package:account_opening_app/bloc/bloc.dart';
 import 'package:bloc/bloc.dart';
 
 class NetworkBloc extends Bloc<NetworkEvent, NetworkState>{

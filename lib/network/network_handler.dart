@@ -1,6 +1,5 @@
 import 'dart:io';
-import 'package:account_opening_app/network/network_bloc.dart';
-import 'package:account_opening_app/network/network_event.dart';
+import 'package:account_opening_app/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
@@ -11,8 +10,8 @@ import 'package:account_opening_app/excpetions/exceptions.dart';
 class NetworkHandler {
   HttpClient _httpClient;
 
-  execute(String endUrl, String data,context) async {
-    final networkBloc = BlocProvider.of<NetworkBloc>(context);
+  Future<String> post(String endUrl, String data) async {
+    // final networkBloc = BlocProvider.of<NetworkBloc>(context);
     String responseString;
     try {
       bool trustSelfSigned = true;
@@ -24,15 +23,35 @@ class NetworkHandler {
       print(
           "NetworkHandler {url : ${response.request.url} , data : $data , status : ${response.statusCode}}");
       responseString = _returnResponse(response);
-      networkBloc.dispatch(Completed(responseData: responseString));
+      // networkBloc.dispatch(Completed(responseData: responseString));
     } on SocketException {
-      networkBloc.dispatch(Error(message: responseString));
+      // networkBloc.dispatch(Error(message: responseString));
       throw FetchDataException('No Internet connection');
-
     }
-
     return responseString;
-  } // execute closes here...
+  } // post closes here...
+
+
+  Future<String> get(String endUrl) async {
+  // final networkBloc = BlocProvider.of<NetworkBloc>(context); 
+    String responseString;
+    try {
+      bool trustSelfSigned = true;
+      _httpClient = new HttpClient()
+        ..badCertificateCallback =
+            ((X509Certificate cert, String host, int port) => trustSelfSigned);
+      IOClient ioClient = new IOClient(_httpClient);
+      final response = await ioClient.get(TEST_URL + endUrl);
+      print(
+          "NetworkHandler {url : ${response.request.url} , status : ${response.statusCode}}");
+      responseString = _returnResponse(response);
+      // networkBloc.dispatch(Completed(responseData: responseString));
+    } on SocketException {
+      // networkBloc.dispatch(Error(message: responseString));
+      throw FetchDataException('No Internet connection');
+    }
+    return responseString;
+  } // get closes here...
 
   dynamic _returnResponse(Response response) {
     switch (response.statusCode) {
