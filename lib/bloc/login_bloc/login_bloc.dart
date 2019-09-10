@@ -6,10 +6,10 @@ import '../bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
- final LoggedInUserRepository _userRepository;
+ final UserRepository _userRepository;
 
 
-  LoginBloc({@required LoggedInUserRepository userRepository})
+  LoginBloc({@required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository;
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:account_opening_app/utils/utils.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 
@@ -17,11 +18,11 @@ class NetworkHandler {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => trustSelfSigned);
       IOClient ioClient = new IOClient(_httpClient);
-      // final response = await ioClient.post(BASE_URL + endUrl, body: data);
-      // print(
-          // "NetworkHandler {url : ${response.request.url} , data : $data , status : ${response.statusCode}}");
-      // responseString = _returnResponse(response);
-      // networkBloc.dispatch(Completed(responseData: responseString));
+       final response = await ioClient.post(BASE_URL + endUrl, body: data);
+       print(
+           "NetworkHandler {url : ${response.request.url} , data : $data , status : ${response.statusCode} , response : ${response.body}");
+       responseString = _returnResponse(response);
+//       networkBloc.dispatch(Completed(responseData: responseString));
     } on SocketException {
       // networkBloc.dispatch(Error(message: responseString));
       throw FetchDataException('No Internet connection');

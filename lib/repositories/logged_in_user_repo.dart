@@ -3,7 +3,7 @@ import 'package:account_opening_app/network/network_handler.dart';
 import 'package:account_opening_app/utils/app_constants.dart';
 import 'package:account_opening_app/utils/device_utils.dart';
 
-class LoggedInUserRepository {
+class UserRepository {
   NetworkHandler _helper = NetworkHandler();
 
   Future<User> signIn(String username, String password) async {
